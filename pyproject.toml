@@ -1,0 +1,74 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mangomas-demo"
+version = "1.0.0"
+description = "MangoMAS Multi-Agent Cognitive Architecture Demo"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [{name = "Ian Shanker"}]
+keywords = ["multi-agent", "cognitive-architecture", "mcts", "mixture-of-experts"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "gradio>=4.0.0",
+    "plotly>=5.0.0",
+    "numpy>=1.24.0",
+    "torch>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-xdist>=3.0",
+    "ruff>=0.5.0",
+    "mypy>=1.8",
+    "pre-commit>=3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Mango-Metrics-NLM/MangoMas-Demo"
+HuggingFace = "https://huggingface.co/spaces/Mango-Metrics-NLM/MangoMAS"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+select = ["E", "F", "I", "W", "UP", "B", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.ruff.isort]
+known-first-party = ["mangomas_demo"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["torch.*", "gradio.*", "plotly.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["mangomas_demo"]
+omit = ["mangomas_demo/ui/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

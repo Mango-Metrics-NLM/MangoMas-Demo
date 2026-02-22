@@ -1,0 +1,71 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets & credentials — NEVER commit
+.env
+*.pem
+*.key
+*-key
+mangomas-key*
+credentials.json
+
+# PyTorch model files
+*.pt
+*.pth
+*.onnx
+*.bin
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+logs/
+
+# Coverage
+.coverage
+htmlcov/
+coverage.xml
+
+# mypy
+.mypy_cache/
+.dmypy.json
+
+# pytest
+.pytest_cache/
+
+# ruff
+.ruff_cache/
+
+# HuggingFace cache
+.cache/
+
+# Temporary files
+tmp/
+temp/

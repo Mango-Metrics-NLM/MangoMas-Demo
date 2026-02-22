@@ -1,0 +1,54 @@
+name: CD — Deploy to HuggingFace
+
+on:
+    push:
+        branches: [main]
+        paths-ignore:
+            - "docs/**"
+            - "*.md"
+
+permissions:
+    contents: read
+    packages: write
+
+jobs:
+    deploy:
+        name: Build & Deploy
+        runs-on: ubuntu-latest
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: "3.11"
+
+            - name: Install dependencies
+              run: pip install huggingface_hub
+
+            - name: Deploy to HuggingFace Space
+              env:
+                  HF_TOKEN: ${{ secrets.HF_TOKEN }}
+              run: |
+                  python -c "
+                  from huggingface_hub import HfApi
+                  api = HfApi(token='$HF_TOKEN')
+                  api.upload_folder(
+                      folder_path='.',
+                      repo_id='Mango-Metrics-NLM/MangoMAS',
+                      repo_type='space',
+                      ignore_patterns=['.git*', 'tests/*', 'docs/*', '.github/*', '__pycache__/*'],
+                  )
+                  print('✅ Deployed to HuggingFace Space')
+                  "
+
+            - name: Smoke test — verify space is live
+              run: |
+                  sleep 30
+                  python -c "
+                  import urllib.request
+                  url = 'https://huggingface.co/spaces/Mango-Metrics-NLM/MangoMAS'
+                  response = urllib.request.urlopen(url)
+                  assert response.status == 200, f'Space returned {response.status}'
+                  print('✅ HuggingFace Space is live')
+                  "
