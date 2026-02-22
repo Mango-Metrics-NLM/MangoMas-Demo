@@ -4,8 +4,6 @@ Sanity Tests — imports, config, parameter counts.
 
 from __future__ import annotations
 
-import pytest
-
 
 class TestImports:
     """Verify all modules import correctly."""
@@ -18,27 +16,27 @@ class TestImports:
 
     def test_import_features(self) -> None:
         """Features module should import."""
-        from mangomas_demo.features import featurize64, plot_features
+        from mangomas_demo.features import featurize64
         assert callable(featurize64)
 
     def test_import_cells(self) -> None:
         """Cells module should import."""
-        from mangomas_demo.cells import execute_cell, compose_cells, CELL_TYPES
+        from mangomas_demo.cells import CELL_TYPES
         assert len(CELL_TYPES) == 10
 
     def test_import_mcts(self) -> None:
         """MCTS module should import."""
-        from mangomas_demo.mcts import run_mcts, MCTSNode, benchmark_strategies
+        from mangomas_demo.mcts import run_mcts
         assert callable(run_mcts)
 
     def test_import_routing(self) -> None:
         """Routing module should import."""
-        from mangomas_demo.routing import route_task, EXPERT_NAMES
+        from mangomas_demo.routing import EXPERT_NAMES
         assert len(EXPERT_NAMES) == 8
 
     def test_import_agents(self) -> None:
         """Agents module should import."""
-        from mangomas_demo.agents import orchestrate, AGENTS
+        from mangomas_demo.agents import AGENTS
         assert len(AGENTS) == 8
 
     def test_import_models(self) -> None:

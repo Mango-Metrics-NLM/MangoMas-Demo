@@ -14,7 +14,10 @@ import time
 from typing import Any
 
 from mangomas_demo.cells.executor import execute_cell
+from mangomas_demo.logging_config import get_logger
 from mangomas_demo.routing.router import route_task
+
+_log = get_logger("agents.orchestrator")
 
 AGENTS: list[dict[str, str]] = [
     {"name": "SWE Agent", "specialization": "Code scaffold generation", "icon": "[SWE]"},
@@ -55,6 +58,7 @@ def orchestrate(
         and total_elapsed_ms.
     """
     start = time.monotonic()
+    _log.info("Orchestrating task with strategy=%s, max_agents=%d", strategy, max_agents)
 
     if strategy == "round_robin":
         agent_results = _orchestrate_round_robin(task, max_agents)
@@ -64,6 +68,8 @@ def orchestrate(
         agent_results = _orchestrate_moe(task, max_agents)
 
     elapsed = (time.monotonic() - start) * 1000
+    _log.info("Orchestration completed in %.2f ms: %d agents selected",
+              elapsed, len(agent_results))
 
     return {
         "task": task,

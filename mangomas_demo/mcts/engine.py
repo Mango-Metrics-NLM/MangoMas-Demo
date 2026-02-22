@@ -13,10 +13,14 @@ import time
 from dataclasses import dataclass
 from typing import Any
 
+from mangomas_demo.logging_config import get_logger
 from mangomas_demo.models import TORCH_AVAILABLE
+
+_log = get_logger("mcts.engine")
 
 if TORCH_AVAILABLE:
     import torch
+
     from mangomas_demo.models import PolicyNetwork, ValueNetwork
 
 TASK_CATEGORIES: dict[str, list[str]] = {
@@ -109,6 +113,8 @@ def run_mcts(
     start = time.monotonic()
     category = _detect_category(task)
     actions = TASK_CATEGORIES[category]
+    _log.info("MCTS starting: strategy=%s, simulations=%d, category=%s",
+              strategy, max_simulations, category)
 
     # Build tree
     root = MCTSNode(id="root", action=task[:50], children=[])
@@ -173,6 +179,9 @@ def run_mcts(
     else:
         best_action = "none"
         best_value = 0.0
+
+    _log.info("MCTS completed in %.2f ms: best_action=%s, best_value=%.3f",
+              elapsed, best_action, best_value)
 
     return {
         "task": task,

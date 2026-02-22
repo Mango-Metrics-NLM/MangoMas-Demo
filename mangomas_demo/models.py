@@ -38,7 +38,7 @@ class ExpertTower(nn.Module if _TORCH else object):  # type: ignore[misc]
         self.fc2 = nn.Linear(h1, h2)
         self.fc3 = nn.Linear(h2, d_out)
 
-    def forward(self, x: "torch.Tensor") -> "torch.Tensor":
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass through the expert tower."""
         return self.fc3(F.relu(self.fc2(F.relu(self.fc1(x)))))
 
@@ -72,7 +72,7 @@ class MixtureOfExperts7M(nn.Module if _TORCH else object):  # type: ignore[misc]
         """Total number of trainable parameters."""
         return sum(p.numel() for p in self.parameters())
 
-    def forward(self, x64: "torch.Tensor") -> "tuple[torch.Tensor, torch.Tensor]":
+    def forward(self, x64: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """Forward pass: returns (logits, gate_weights)."""
         # Gating
         gate = F.relu(self.gate_fc1(x64))
@@ -113,7 +113,7 @@ class RouterNet(nn.Module if _TORCH else object):  # type: ignore[misc]
             nn.Linear(d_h // 2, n_out),
         )
 
-    def forward(self, x: "torch.Tensor") -> "torch.Tensor":
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass returning softmax probabilities."""
         return torch.softmax(self.net(x), dim=-1)
 
@@ -129,7 +129,7 @@ class PolicyNetwork(nn.Module if _TORCH else object):  # type: ignore[misc]
             nn.Linear(128, n_actions), nn.Softmax(dim=-1),
         )
 
-    def forward(self, x: "torch.Tensor") -> "torch.Tensor":
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass returning action probabilities."""
         return self.net(x)
 
@@ -145,6 +145,6 @@ class ValueNetwork(nn.Module if _TORCH else object):  # type: ignore[misc]
             nn.Linear(64, 1), nn.Tanh(),
         )
 
-    def forward(self, x: "torch.Tensor") -> "torch.Tensor":
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass returning scalar value estimate in [-1, 1]."""
         return self.net(x)

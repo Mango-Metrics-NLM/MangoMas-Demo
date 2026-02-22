@@ -16,23 +16,32 @@ __version__ = "1.0.0"
 __author__ = "Ian Cruickshank"
 
 # ---------------------------------------------------------------------------
+# Logging — auto-configure on import
+# ---------------------------------------------------------------------------
+from mangomas_demo.logging_config import configure_logging, get_logger
+
+configure_logging()
+
+# ---------------------------------------------------------------------------
 # Public re-exports for convenient top-level access
 # ---------------------------------------------------------------------------
-from mangomas_demo.features import featurize64, plot_features
-from mangomas_demo.cells import execute_cell, compose_cells
-from mangomas_demo.mcts.engine import run_mcts, MCTSNode
-from mangomas_demo.mcts.benchmark import benchmark_strategies
-from mangomas_demo.routing.router import route_task
-from mangomas_demo.agents.orchestrator import orchestrate
+from mangomas_demo.agents.orchestrator import orchestrate  # noqa: E402
+from mangomas_demo.cells import compose_cells, execute_cell  # noqa: E402
+from mangomas_demo.features import featurize64, plot_features  # noqa: E402
+from mangomas_demo.mcts.benchmark import benchmark_strategies  # noqa: E402
+from mangomas_demo.mcts.engine import MCTSNode, run_mcts  # noqa: E402
+from mangomas_demo.routing.router import route_task  # noqa: E402
 
 __all__ = [
-    "featurize64",
-    "plot_features",
-    "execute_cell",
-    "compose_cells",
-    "run_mcts",
     "MCTSNode",
     "benchmark_strategies",
-    "route_task",
+    "compose_cells",
+    "configure_logging",
+    "execute_cell",
+    "featurize64",
+    "get_logger",
     "orchestrate",
+    "plot_features",
+    "route_task",
+    "run_mcts",
 ]

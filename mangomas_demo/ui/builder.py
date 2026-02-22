@@ -12,11 +12,11 @@ Tabs:
 
 from __future__ import annotations
 
-import json
 from typing import Any
 
 import gradio as gr
 
+from mangomas_demo.agents.orchestrator import orchestrate
 from mangomas_demo.cells.executor import compose_cells, execute_cell
 from mangomas_demo.cells.types import CELL_TYPES
 from mangomas_demo.features import featurize64, plot_features
@@ -25,7 +25,6 @@ from mangomas_demo.mcts.engine import run_mcts
 from mangomas_demo.mcts.viz import plot_mcts_tree
 from mangomas_demo.routing.router import route_task
 from mangomas_demo.routing.viz import plot_expert_weights
-from mangomas_demo.agents.orchestrator import orchestrate
 from mangomas_demo.ui.styles import THEME_CSS
 
 

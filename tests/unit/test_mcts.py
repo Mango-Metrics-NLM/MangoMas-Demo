@@ -4,10 +4,8 @@ Unit Tests — MCTS Planning Engine.
 
 from __future__ import annotations
 
-import pytest
-
-from mangomas_demo.mcts.engine import MCTSNode, run_mcts, TASK_CATEGORIES, _detect_category
 from mangomas_demo.mcts.benchmark import benchmark_strategies
+from mangomas_demo.mcts.engine import TASK_CATEGORIES, MCTSNode, _detect_category, run_mcts
 
 
 class TestMCTSNode:

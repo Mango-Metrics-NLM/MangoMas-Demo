@@ -4,13 +4,11 @@ Integration Tests — full pipeline and end-to-end flows.
 
 from __future__ import annotations
 
-import pytest
-
-from mangomas_demo.features import featurize64
-from mangomas_demo.cells.executor import execute_cell, compose_cells
-from mangomas_demo.routing.router import route_task
 from mangomas_demo.agents.orchestrator import orchestrate
+from mangomas_demo.cells.executor import compose_cells, execute_cell
+from mangomas_demo.features import featurize64
 from mangomas_demo.mcts.engine import run_mcts
+from mangomas_demo.routing.router import route_task
 
 
 class TestFullPipeline:

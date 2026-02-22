@@ -7,8 +7,6 @@ from __future__ import annotations
 import os
 import re
 
-import pytest
-
 from mangomas_demo.cells.executor import execute_cell
 
 

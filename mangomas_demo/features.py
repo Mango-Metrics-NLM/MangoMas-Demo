@@ -12,6 +12,10 @@ import math
 
 import plotly.graph_objects as go
 
+from mangomas_demo.logging_config import get_logger
+
+_log = get_logger("features")
+
 
 def featurize64(text: str) -> list[float]:
     """
@@ -78,7 +82,10 @@ def featurize64(text: str) -> list[float]:
 
     # Normalize to unit vector
     norm = math.sqrt(sum(f * f for f in features)) + 1e-8
-    return [f / norm for f in features[:64]]
+    normalized = [f / norm for f in features[:64]]
+    _log.debug("featurize64 produced %d-dim vector (norm=%.4f) for input length %d",
+               len(normalized), norm, len(text))
+    return normalized
 
 
 def plot_features(features: list[float], title: str = "64-D Feature Vector") -> go.Figure:

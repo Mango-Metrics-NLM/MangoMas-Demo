@@ -13,7 +13,10 @@ from typing import Any
 import numpy as np
 
 from mangomas_demo.features import featurize64
+from mangomas_demo.logging_config import get_logger
 from mangomas_demo.models import TORCH_AVAILABLE, RouterNet
+
+_log = get_logger("routing.router")
 
 if TORCH_AVAILABLE:
     import torch
@@ -76,6 +79,8 @@ def route_task(task: str, top_k: int = 3) -> dict[str, Any]:
         weights = np.array([abs(f) for f in features[: len(EXPERT_NAMES)]])
         weights = weights / (weights.sum() + 1e-8)
 
+    _log.debug("Routing task (nn_enabled=%s): %s", TORCH_AVAILABLE, task[:80])
+
     # Apply keyword-based semantic boost to expert routing
     lower_task = task.lower()
     boost = np.zeros(len(EXPERT_NAMES))
@@ -98,6 +103,8 @@ def route_task(task: str, top_k: int = 3) -> dict[str, Any]:
     ]
 
     elapsed = (time.monotonic() - start) * 1000
+    top_names = [s["expert"] for s in selected]
+    _log.info("Routed to top-%d experts in %.2f ms: %s", top_k, elapsed, top_names)
 
     return {
         "task": task,

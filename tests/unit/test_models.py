@@ -16,6 +16,7 @@ class TestModels:
     def test_expert_tower_output_shape(self) -> None:
         """ExpertTower should output (batch, 256)."""
         import torch
+
         from mangomas_demo.models import ExpertTower
 
         model = ExpertTower()
@@ -35,6 +36,7 @@ class TestModels:
     def test_moe_7m_output_shape(self) -> None:
         """MoE model should output (logits, gate_weights)."""
         import torch
+
         from mangomas_demo.models import MixtureOfExperts7M
 
         model = MixtureOfExperts7M()
@@ -46,6 +48,7 @@ class TestModels:
     def test_router_net_softmax(self) -> None:
         """RouterNet forward should produce valid softmax output."""
         import torch
+
         from mangomas_demo.models import RouterNet
 
         model = RouterNet()
@@ -57,6 +60,7 @@ class TestModels:
     def test_policy_network_output(self) -> None:
         """PolicyNetwork should output action probabilities."""
         import torch
+
         from mangomas_demo.models import PolicyNetwork
 
         model = PolicyNetwork(d_in=128, n_actions=32)
@@ -68,6 +72,7 @@ class TestModels:
     def test_value_network_output(self) -> None:
         """ValueNetwork should output scalar in [-1, 1]."""
         import torch
+
         from mangomas_demo.models import ValueNetwork
 
         model = ValueNetwork()

@@ -14,6 +14,9 @@ import uuid
 from typing import Any
 
 from mangomas_demo.cells.types import CELL_TYPES
+from mangomas_demo.logging_config import get_logger
+
+_log = get_logger("cells.executor")
 
 
 def execute_cell(cell_type: str, text: str, config_json: str = "{}") -> dict[str, Any]:
@@ -81,6 +84,8 @@ def execute_cell(cell_type: str, text: str, config_json: str = "{}") -> dict[str
 
     elapsed = (time.monotonic() - start) * 1000
     result["elapsed_ms"] = round(elapsed, 2)
+    _log.info("Cell '%s' completed in %.2f ms (status=%s)",
+              cell_type, elapsed, result["status"])
     return result
 
 
@@ -398,7 +403,7 @@ def _execute_aggregator(
             weights = [1.0 / (i + 1) for i in range(len(confidences))]
             w_sum = sum(weights)
             agg_confidence = (
-                sum(c * w for c, w in zip(confidences, weights)) / w_sum
+                sum(c * w for c, w in zip(confidences, weights, strict=False)) / w_sum
                 if w_sum else 0.0
             )
     else:

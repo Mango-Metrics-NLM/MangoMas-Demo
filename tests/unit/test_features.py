@@ -6,8 +6,6 @@ from __future__ import annotations
 
 import math
 
-import pytest
-
 from mangomas_demo.features import featurize64, plot_features
 
 

@@ -4,12 +4,9 @@ Unit Tests — Cognitive Cells (all 10 cell types).
 
 from __future__ import annotations
 
-import json
-from typing import Any
-
 import pytest
 
-from mangomas_demo.cells.executor import execute_cell, compose_cells
+from mangomas_demo.cells.executor import compose_cells, execute_cell
 from mangomas_demo.cells.types import CELL_TYPES
 
 
