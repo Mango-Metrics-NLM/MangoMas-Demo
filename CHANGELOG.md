@@ -2,6 +2,14 @@
 
 All notable changes to MangoMAS Demo will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+
+- Fix incorrect GitHub URL in `notebooks/MangMas_demo.ipynb` summary cell (`mangomas/mangomas-demo` → `Mango-Metrics-NLM/MangoMas-Demo`)
+- Remove duplicate `notebooks/demo.ipynb` (canonical file is `MangMas_demo.ipynb`)
+- Update `test_notebook.py` to validate canonical notebook file and add link regression tests
+
 ## [1.0.0] — 2026-02-22
 
 ### 🎉 Initial Public Release

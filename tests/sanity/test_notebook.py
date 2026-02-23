@@ -2,7 +2,7 @@
 Sanity Tests — Jupyter Notebook validation.
 
 Verifies that the demo notebook exists, is valid JSON,
-and uses only public API imports.
+uses only public API imports, and contains correct links.
 """
 
 from __future__ import annotations
@@ -14,7 +14,10 @@ import re
 import pytest
 
 _REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-_NOTEBOOK_PATH = os.path.join(_REPO_ROOT, "notebooks", "demo.ipynb")
+_NOTEBOOK_PATH = os.path.join(_REPO_ROOT, "notebooks", "MangMas_demo.ipynb")
+
+# Expected GitHub repository URL
+_EXPECTED_GITHUB_URL = "https://github.com/Mango-Metrics-NLM/MangoMas-Demo"
 
 # Minimum expected cells (markdown + code)
 _MIN_CELL_COUNT = 10
@@ -47,7 +50,7 @@ class TestNotebookExists:
     """Verify the demo notebook is present."""
 
     def test_notebook_file_exists(self) -> None:
-        """notebooks/demo.ipynb should exist."""
+        """notebooks/MangMas_demo.ipynb should exist."""
         assert os.path.isfile(_NOTEBOOK_PATH), f"Missing notebook: {_NOTEBOOK_PATH}"
 
     def test_notebook_not_empty(self) -> None:
@@ -62,12 +65,12 @@ class TestNotebookStructure:
     """Verify notebook JSON structure and content."""
 
     @pytest.fixture()
-    def notebook(self) -> dict:
+    def notebook(self) -> dict:  # type: ignore[type-arg]
         """Load the notebook as a dict."""
         if not os.path.isfile(_NOTEBOOK_PATH):
             pytest.skip("Notebook does not exist yet")
         with open(_NOTEBOOK_PATH, encoding="utf-8") as f:
-            return json.load(f)
+            return json.load(f)  # type: ignore[no-any-return]
 
     def test_valid_json(self) -> None:
         """Notebook should be valid JSON."""
@@ -77,38 +80,38 @@ class TestNotebookStructure:
             data = json.load(f)
         assert isinstance(data, dict)
 
-    def test_has_nbformat(self, notebook: dict) -> None:
+    def test_has_nbformat(self, notebook: dict) -> None:  # type: ignore[type-arg]
         """Notebook should declare nbformat version."""
         assert "nbformat" in notebook
         assert notebook["nbformat"] >= 4
 
-    def test_has_cells(self, notebook: dict) -> None:
+    def test_has_cells(self, notebook: dict) -> None:  # type: ignore[type-arg]
         """Notebook should contain cells."""
         assert "cells" in notebook
         assert isinstance(notebook["cells"], list)
 
-    def test_minimum_cell_count(self, notebook: dict) -> None:
+    def test_minimum_cell_count(self, notebook: dict) -> None:  # type: ignore[type-arg]
         """Notebook should have a minimum number of cells."""
         assert len(notebook["cells"]) >= _MIN_CELL_COUNT, (
             f"Expected >= {_MIN_CELL_COUNT} cells, got {len(notebook['cells'])}"
         )
 
-    def test_has_markdown_cells(self, notebook: dict) -> None:
+    def test_has_markdown_cells(self, notebook: dict) -> None:  # type: ignore[type-arg]
         """Notebook should contain explanatory markdown cells."""
         md_cells = [c for c in notebook["cells"] if c.get("cell_type") == "markdown"]
         assert len(md_cells) >= 5, "Expected at least 5 markdown cells"
 
-    def test_has_code_cells(self, notebook: dict) -> None:
+    def test_has_code_cells(self, notebook: dict) -> None:  # type: ignore[type-arg]
         """Notebook should contain executable code cells."""
         code_cells = [c for c in notebook["cells"] if c.get("cell_type") == "code"]
         assert len(code_cells) >= 5, "Expected at least 5 code cells"
 
-    def test_cells_have_source(self, notebook: dict) -> None:
+    def test_cells_have_source(self, notebook: dict) -> None:  # type: ignore[type-arg]
         """Every cell should have a source field."""
         for i, cell in enumerate(notebook["cells"]):
             assert "source" in cell, f"Cell {i} missing 'source' field"
 
-    def test_code_cells_use_public_api(self, notebook: dict) -> None:
+    def test_code_cells_use_public_api(self, notebook: dict) -> None:  # type: ignore[type-arg]
         """Code cells should only import from public API modules."""
         code_cells = [c for c in notebook["cells"] if c.get("cell_type") == "code"]
         violations: list[str] = []
@@ -121,7 +124,7 @@ class TestNotebookStructure:
                     violations.append(f"Cell {i}: {imp}")
         assert len(violations) == 0, f"Non-public API imports found: {violations}"
 
-    def test_has_kernelspec(self, notebook: dict) -> None:
+    def test_has_kernelspec(self, notebook: dict) -> None:  # type: ignore[type-arg]
         """Notebook metadata should include a kernelspec."""
         metadata = notebook.get("metadata", {})
         assert "kernelspec" in metadata, "Missing kernelspec in metadata"
@@ -161,3 +164,36 @@ class TestNotebookContent:
     def test_covers_orchestration(self, all_source: str) -> None:
         """Notebook should demonstrate agent orchestration."""
         assert "orchestrate" in all_source
+
+
+class TestNotebookLinks:
+    """Verify notebook contains correct external links."""
+
+    @pytest.fixture()
+    def all_source(self) -> str:
+        """Concatenate all cell sources into one string."""
+        if not os.path.isfile(_NOTEBOOK_PATH):
+            pytest.skip("Notebook does not exist yet")
+        with open(_NOTEBOOK_PATH, encoding="utf-8") as f:
+            nb = json.load(f)
+        parts: list[str] = []
+        for cell in nb.get("cells", []):
+            parts.append("".join(cell.get("source", [])))
+        return "\n".join(parts)
+
+    def test_github_url_is_correct(self, all_source: str) -> None:
+        """Notebook GitHub link should point to the correct repository."""
+        github_urls = re.findall(r"https://github\.com/[\w\-]+/[\w\-]+", all_source)
+        assert len(github_urls) > 0, "No GitHub URL found in notebook"
+        for url in github_urls:
+            assert url == _EXPECTED_GITHUB_URL, (
+                f"Incorrect GitHub URL: {url} (expected {_EXPECTED_GITHUB_URL})"
+            )
+
+    def test_no_placeholder_urls(self, all_source: str) -> None:
+        """Notebook should not contain placeholder URLs."""
+        placeholders = ["placeholder", "TODO", "FIXME"]
+        for placeholder in placeholders:
+            assert placeholder not in all_source, (
+                f"Placeholder '{placeholder}' found in notebook"
+            )
