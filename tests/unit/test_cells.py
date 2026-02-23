@@ -130,8 +130,10 @@ class TestEmpathyCell:
         """Should detect frustration keywords."""
         result = execute_cell("empathy", "I'm so frustrated with this broken system")
         assert result["detected_emotion"] == "frustration"
-        assert "frustrat" in result["empathetic_response"].lower() or \
-               "resolve" in result["empathetic_response"].lower()
+        assert (
+            "frustrat" in result["empathetic_response"].lower()
+            or "resolve" in result["empathetic_response"].lower()
+        )
 
     def test_excitement_detection(self) -> None:
         """Should detect excitement keywords."""
@@ -162,10 +164,7 @@ class TestCuriosityCell:
         """Questions should reference words from the input."""
         result = execute_cell("curiosity", "Security vulnerability analysis")
         questions_text = " ".join(result["questions"])
-        assert any(
-            w in questions_text.lower()
-            for w in ["security", "vulnerability", "analysis"]
-        )
+        assert any(w in questions_text.lower() for w in ["security", "vulnerability", "analysis"])
 
     def test_max_questions_config(self, sample_text: str) -> None:
         """max_questions config should limit output."""
@@ -215,7 +214,8 @@ class TestAggregatorCell:
     def test_custom_strategy(self, sample_text: str) -> None:
         """max_confidence strategy should work."""
         result = execute_cell(
-            "aggregator", sample_text,
+            "aggregator",
+            sample_text,
             config_json='{"strategy": "max_confidence"}',
         )
         assert result["strategy"] == "max_confidence"

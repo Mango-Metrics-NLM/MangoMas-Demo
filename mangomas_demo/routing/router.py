@@ -22,8 +22,14 @@ if TORCH_AVAILABLE:
     import torch
 
 EXPERT_NAMES: list[str] = [
-    "Code Expert", "Test Expert", "Design Expert", "Research Expert",
-    "Architecture Expert", "Security Expert", "Performance Expert", "Docs Expert",
+    "Code Expert",
+    "Test Expert",
+    "Design Expert",
+    "Research Expert",
+    "Architecture Expert",
+    "Security Expert",
+    "Performance Expert",
+    "Docs Expert",
 ]
 
 # Singleton router with fixed seed for deterministic routing
@@ -31,14 +37,14 @@ _ROUTER_SEED = 42
 _router_net_singleton: RouterNet | None = None
 
 
-def _get_router() -> RouterNet:
+def _get_router() -> RouterNet | None:
     """Get or create the singleton RouterNet with a fixed seed."""
     global _router_net_singleton
     if _router_net_singleton is None and TORCH_AVAILABLE:
         torch.manual_seed(_ROUTER_SEED)
         _router_net_singleton = RouterNet(d_in=64, n_out=len(EXPERT_NAMES))
         _router_net_singleton.eval()
-    return _router_net_singleton  # type: ignore[return-value]
+    return _router_net_singleton
 
 
 # Keyword → expert index mapping for semantic routing boost
@@ -69,14 +75,18 @@ def route_task(task: str, top_k: int = 3) -> dict[str, Any]:
 
     features = featurize64(task)
 
-    if TORCH_AVAILABLE:
-        router = _get_router()
+    router = _get_router()
+    if router is not None:
         feature_tensor = torch.tensor([features], dtype=torch.float32)
         with torch.no_grad():
             weights = router(feature_tensor)[0].numpy()
     else:
-        # Fallback: deterministic routing from features
-        weights = np.array([abs(f) for f in features[: len(EXPERT_NAMES)]])
+        # Fallback: deterministic routing from features using all expert dims
+        n_experts = len(EXPERT_NAMES)
+        feature_slice = features[:n_experts] if len(features) >= n_experts else features
+        weights = np.array([abs(f) for f in feature_slice])
+        if len(weights) < n_experts:
+            weights = np.pad(weights, (0, n_experts - len(weights)), constant_values=0.01)
         weights = weights / (weights.sum() + 1e-8)
 
     _log.debug("Routing task (nn_enabled=%s): %s", TORCH_AVAILABLE, task[:80])
@@ -110,8 +120,7 @@ def route_task(task: str, top_k: int = 3) -> dict[str, Any]:
         "task": task,
         "features": features,
         "all_weights": {
-            EXPERT_NAMES[i]: round(float(weights[i]), 4)
-            for i in range(len(EXPERT_NAMES))
+            EXPERT_NAMES[i]: round(float(weights[i]), 4) for i in range(len(EXPERT_NAMES))
         },
         "selected_experts": selected,
         "top_k": top_k,

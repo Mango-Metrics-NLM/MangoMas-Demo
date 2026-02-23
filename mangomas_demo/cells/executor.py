@@ -33,7 +33,7 @@ def execute_cell(cell_type: str, text: str, config_json: str = "{}") -> dict[str
     start = time.monotonic()
 
     # Validate empty input
-    if not text or not text.strip():
+    if not text.strip():
         return {
             "cell_type": cell_type,
             "status": "error",
@@ -84,8 +84,7 @@ def execute_cell(cell_type: str, text: str, config_json: str = "{}") -> dict[str
 
     elapsed = (time.monotonic() - start) * 1000
     result["elapsed_ms"] = round(elapsed, 2)
-    _log.info("Cell '%s' completed in %.2f ms (status=%s)",
-              cell_type, elapsed, result["status"])
+    _log.info("Cell '%s' completed in %.2f ms (status=%s)", cell_type, elapsed, result["status"])
     return result
 
 
@@ -109,21 +108,23 @@ def compose_cells(pipeline_str: str, text: str) -> dict[str, Any]:
 
     for ct in cell_types:
         if ct not in CELL_TYPES:
-            activations.append({
-                "cell_type": ct,
-                "status": "error",
-                "message": f"Unknown cell type: {ct}",
-            })
+            activations.append(
+                {
+                    "cell_type": ct,
+                    "status": "error",
+                    "message": f"Unknown cell type: {ct}",
+                }
+            )
             continue
         result = execute_cell(ct, text)
-        activations.append({
-            "cell_type": ct,
-            "status": result.get("status", "ok"),
-            "elapsed_ms": result.get("elapsed_ms", 0),
-        })
-        context.update({
-            k: v for k, v in result.items() if k not in ("request_id", "elapsed_ms")
-        })
+        activations.append(
+            {
+                "cell_type": ct,
+                "status": result.get("status", "ok"),
+                "elapsed_ms": result.get("elapsed_ms", 0),
+            }
+        )
+        context.update({k: v for k, v in result.items() if k not in ("request_id", "elapsed_ms")})
         final_output = result
 
     return {
@@ -140,9 +141,7 @@ def compose_cells(pipeline_str: str, text: str) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def _execute_reasoning(
-    result: dict[str, Any], text: str, config: dict[str, Any]
-) -> None:
+def _execute_reasoning(result: dict[str, Any], text: str, config: dict[str, Any]) -> None:
     """Structured reasoning with configurable head type."""
     head = config.get("head_type", "rule")
     words = text.split()
@@ -150,13 +149,13 @@ def _execute_reasoning(
     chunk_size = max(len(words) // 3, 1)
     for i in range(0, len(words), chunk_size):
         chunk = " ".join(words[i : i + chunk_size])
-        sections.append({
-            "text": chunk,
-            "confidence": round(random.uniform(0.7, 0.99), 3),
-            "boundary_type": random.choice(
-                ["topic_shift", "elaboration", "conclusion"]
-            ),
-        })
+        sections.append(
+            {
+                "text": chunk,
+                "confidence": round(random.uniform(0.7, 0.99), 3),
+                "boundary_type": random.choice(["topic_shift", "elaboration", "conclusion"]),
+            }
+        )
     result["head_type"] = head
     result["sections"] = sections
     result["section_count"] = len(sections)
@@ -175,9 +174,7 @@ def _execute_memory(result: dict[str, Any], text: str) -> None:
     result["consent_status"] = "granted"
 
 
-def _execute_causal(
-    result: dict[str, Any], text: str, config: dict[str, Any]
-) -> None:
+def _execute_causal(result: dict[str, Any], text: str, config: dict[str, Any]) -> None:
     """Simulated causal inference via do-calculus."""
     result["mode"] = config.get("mode", "do_calculus")
     result["variables"] = [w for w in text.split() if len(w) > 3][:5]
@@ -216,23 +213,52 @@ def _execute_empathy(result: dict[str, Any], text: str) -> None:
     lower = text.lower()
     emotion_keywords: dict[str, list[str]] = {
         "frustration": [
-            "frustrat", "annoy", "angry", "upset", "fail", "broken", "stuck",
+            "frustrat",
+            "annoy",
+            "angry",
+            "upset",
+            "fail",
+            "broken",
+            "stuck",
             "overwhelm",
         ],
         "anxiety": [
-            "worry", "anxious", "nervous", "afraid", "fear", "concern", "stress",
+            "worry",
+            "anxious",
+            "nervous",
+            "afraid",
+            "fear",
+            "concern",
+            "stress",
             "uncertain",
         ],
         "excitement": [
-            "excit", "amazing", "awesome", "great", "love", "fantastic", "thrilled",
+            "excit",
+            "amazing",
+            "awesome",
+            "great",
+            "love",
+            "fantastic",
+            "thrilled",
             "happy",
         ],
         "satisfaction": [
-            "satisfied", "pleased", "good", "well", "success", "accomplish", "done",
+            "satisfied",
+            "pleased",
+            "good",
+            "well",
+            "success",
+            "accomplish",
+            "done",
             "complete",
         ],
         "confusion": [
-            "confus", "unclear", "don't understand", "what does", "how does", "lost",
+            "confus",
+            "unclear",
+            "don't understand",
+            "what does",
+            "how does",
+            "lost",
             "puzzle",
         ],
     }
@@ -255,9 +281,7 @@ def _execute_empathy(result: dict[str, Any], text: str) -> None:
     result["empathetic_response"] = responses[detected]
 
 
-def _execute_curiosity(
-    result: dict[str, Any], text: str, config: dict[str, Any]
-) -> None:
+def _execute_curiosity(result: dict[str, Any], text: str, config: dict[str, Any]) -> None:
     """Topic-aware question generation from extracted keywords."""
     words = [w for w in text.split() if len(w) > 3]
     topics = list(dict.fromkeys(words[:5]))  # unique, order-preserved
@@ -304,7 +328,8 @@ def _execute_figliteral(result: dict[str, Any], text: str) -> None:
                 "Contains simile/metaphor — direct comparison without figurative intent"
             )
         result["literal_interpretation"] = (
-            "; ".join(literal_parts) if literal_parts
+            "; ".join(literal_parts)
+            if literal_parts
             else "No specific idiom decomposition available"
         )
         result["figurative_elements"] = literal_parts
@@ -322,7 +347,9 @@ def _execute_r2p(result: dict[str, Any]) -> None:
     result["plan"] = steps
     result["total_effort"] = "20h"
     result["success_criteria"] = [
-        "All tests pass", "Performance targets met", "Code reviewed",
+        "All tests pass",
+        "Performance targets met",
+        "Code reviewed",
     ]
 
 
@@ -337,9 +364,16 @@ def _execute_telemetry(result: dict[str, Any], text: str) -> None:
 
     # Extract action verbs
     action_map = {
-        "click": "click", "submit": "submit", "scroll": "scroll",
-        "navigate": "navigate", "hover": "hover", "type": "input",
-        "select": "select", "drag": "drag", "drop": "drop", "open": "open",
+        "click": "click",
+        "submit": "submit",
+        "scroll": "scroll",
+        "navigate": "navigate",
+        "hover": "hover",
+        "type": "input",
+        "select": "select",
+        "drag": "drag",
+        "drop": "drop",
+        "open": "open",
     }
     for verb, action in action_map.items():
         if verb in lower:
@@ -357,9 +391,7 @@ def _execute_telemetry(result: dict[str, Any], text: str) -> None:
     page_match = re.search(r"(?:on|at|in)\s+(?:the\s+)?(\w+)\s+page", lower)
     if page_match:
         attrs["page"] = page_match.group(1)
-    elem_match = re.search(
-        r"(?:click|clicked|press|pressed|hit)\s+(?:the\s+)?(\w+)", lower
-    )
+    elem_match = re.search(r"(?:click|clicked|press|pressed|hit)\s+(?:the\s+)?(\w+)", lower)
     if elem_match:
         attrs["element"] = elem_match.group(1)
 
@@ -369,9 +401,7 @@ def _execute_telemetry(result: dict[str, Any], text: str) -> None:
     }
 
 
-def _execute_aggregator(
-    result: dict[str, Any], text: str, config: dict[str, Any]
-) -> None:
+def _execute_aggregator(result: dict[str, Any], text: str, config: dict[str, Any]) -> None:
     """Multi-expert output aggregation with configurable strategy."""
     strategy = config.get("strategy", "weighted_average")
     sub_cells = config.get("sub_cells", ["reasoning", "ethics", "causal"])
@@ -380,31 +410,31 @@ def _execute_aggregator(
     for sc in sub_cells:
         if sc in CELL_TYPES and sc != "aggregator":  # prevent recursion
             sr = execute_cell(sc, text)
-            sub_results.append({
-                "cell": sc,
-                "status": sr.get("status", "ok"),
-                "confidence": sr.get("confidence", sr.get("risk_score", 0.8)),
-                "elapsed_ms": sr.get("elapsed_ms", 0),
-            })
+            sub_results.append(
+                {
+                    "cell": sc,
+                    "status": sr.get("status", "ok"),
+                    "confidence": sr.get("confidence", sr.get("risk_score", 0.8)),
+                    "elapsed_ms": sr.get("elapsed_ms", 0),
+                }
+            )
 
     # Compute aggregated confidence
     if sub_results:
         confidences = [
-            r["confidence"] for r in sub_results
-            if isinstance(r["confidence"], (int, float))
+            r["confidence"] for r in sub_results if isinstance(r["confidence"], (int, float))
         ]
         if strategy == "max_confidence":
             agg_confidence = max(confidences) if confidences else 0.0
         elif strategy == "ensemble":
-            agg_confidence = (
-                sum(confidences) / len(confidences) if confidences else 0.0
-            )
+            agg_confidence = sum(confidences) / len(confidences) if confidences else 0.0
         else:  # weighted_average
             weights = [1.0 / (i + 1) for i in range(len(confidences))]
             w_sum = sum(weights)
             agg_confidence = (
-                sum(c * w for c, w in zip(confidences, weights, strict=False)) / w_sum
-                if w_sum else 0.0
+                sum(c * w for c, w in zip(confidences, weights, strict=True)) / w_sum
+                if w_sum
+                else 0.0
             )
     else:
         agg_confidence = 0.0

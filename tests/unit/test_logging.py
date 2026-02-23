@@ -144,9 +144,13 @@ class TestJSONFormatter:
         """JSON output should include a timestamp."""
         formatter = _JSONFormatter()
         record = logging.LogRecord(
-            name="test", level=logging.INFO,
-            pathname="t.py", lineno=1,
-            msg="ts check", args=(), exc_info=None,
+            name="test",
+            level=logging.INFO,
+            pathname="t.py",
+            lineno=1,
+            msg="ts check",
+            args=(),
+            exc_info=None,
         )
         parsed = json.loads(formatter.format(record))
         assert "timestamp" in parsed
@@ -155,9 +159,13 @@ class TestJSONFormatter:
         """Extra structured fields should appear in JSON output."""
         formatter = _JSONFormatter()
         record = logging.LogRecord(
-            name="test", level=logging.INFO,
-            pathname="t.py", lineno=1,
-            msg="extra test", args=(), exc_info=None,
+            name="test",
+            level=logging.INFO,
+            pathname="t.py",
+            lineno=1,
+            msg="extra test",
+            args=(),
+            exc_info=None,
         )
         record.component = "cells"  # type: ignore[attr-defined]
         record.elapsed_ms = 12.5  # type: ignore[attr-defined]
@@ -172,11 +180,16 @@ class TestJSONFormatter:
             raise ValueError("test error")
         except ValueError:
             import sys
+
             exc_info = sys.exc_info()
         record = logging.LogRecord(
-            name="test", level=logging.ERROR,
-            pathname="t.py", lineno=1,
-            msg="error", args=(), exc_info=exc_info,
+            name="test",
+            level=logging.ERROR,
+            pathname="t.py",
+            lineno=1,
+            msg="error",
+            args=(),
+            exc_info=exc_info,
         )
         parsed = json.loads(formatter.format(record))
         assert "exception" in parsed
@@ -206,7 +219,8 @@ class TestLoggingIntegration:
         with caplog.at_level(logging.WARNING, logger=_LOGGER_NAME):
             execute_cell("reasoning", "Test input for logging check")
         warning_records = [
-            r for r in caplog.records
+            r
+            for r in caplog.records
             if r.levelno >= logging.WARNING and r.name.startswith(_LOGGER_NAME)
         ]
         assert len(warning_records) == 0
@@ -218,9 +232,11 @@ class TestLoggingIntegration:
         """
         with caplog.at_level(logging.INFO, logger=_LOGGER_NAME):
             from mangomas_demo.features import featurize64
+
             featurize64("debug suppression test")
         debug_records = [
-            r for r in caplog.records
+            r
+            for r in caplog.records
             if r.levelno == logging.DEBUG and r.name.startswith(_LOGGER_NAME)
         ]
         assert len(debug_records) == 0

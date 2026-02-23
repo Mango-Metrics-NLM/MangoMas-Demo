@@ -40,7 +40,8 @@ class ExpertTower(nn.Module if _TORCH else object):  # type: ignore[misc]
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass through the expert tower."""
-        return self.fc3(F.relu(self.fc2(F.relu(self.fc1(x)))))
+        result: torch.Tensor = self.fc3(F.relu(self.fc2(F.relu(self.fc1(x)))))
+        return result
 
 
 class MixtureOfExperts7M(nn.Module if _TORCH else object):  # type: ignore[misc]
@@ -97,8 +98,13 @@ class RouterNet(nn.Module if _TORCH else object):  # type: ignore[misc]
     """
 
     EXPERTS = [
-        "code_expert", "test_expert", "design_expert", "research_expert",
-        "architecture_expert", "security_expert", "performance_expert",
+        "code_expert",
+        "test_expert",
+        "design_expert",
+        "research_expert",
+        "architecture_expert",
+        "security_expert",
+        "performance_expert",
         "documentation_expert",
     ]
 
@@ -124,14 +130,18 @@ class PolicyNetwork(nn.Module if _TORCH else object):  # type: ignore[misc]
     def __init__(self, d_in: int = 128, n_actions: int = 32) -> None:
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(d_in, 256), nn.ReLU(),
-            nn.Linear(256, 128), nn.ReLU(),
-            nn.Linear(128, n_actions), nn.Softmax(dim=-1),
+            nn.Linear(d_in, 256),
+            nn.ReLU(),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, n_actions),
+            nn.Softmax(dim=-1),
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass returning action probabilities."""
-        return self.net(x)
+        result: torch.Tensor = self.net(x)
+        return result
 
 
 class ValueNetwork(nn.Module if _TORCH else object):  # type: ignore[misc]
@@ -140,11 +150,15 @@ class ValueNetwork(nn.Module if _TORCH else object):  # type: ignore[misc]
     def __init__(self, d_in: int = 192) -> None:
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(d_in, 256), nn.ReLU(),
-            nn.Linear(256, 64), nn.ReLU(),
-            nn.Linear(64, 1), nn.Tanh(),
+            nn.Linear(d_in, 256),
+            nn.ReLU(),
+            nn.Linear(256, 64),
+            nn.ReLU(),
+            nn.Linear(64, 1),
+            nn.Tanh(),
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass returning scalar value estimate in [-1, 1]."""
-        return self.net(x)
+        result: torch.Tensor = self.net(x)
+        return result

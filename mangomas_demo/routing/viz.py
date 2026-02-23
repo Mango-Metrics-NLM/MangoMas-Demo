@@ -19,8 +19,14 @@ def plot_expert_weights(weights: dict[str, float]) -> go.Figure:
     names = list(weights.keys())
     vals = list(weights.values())
     colors = [
-        "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4",
-        "#FFEAA7", "#DDA0DD", "#F0E68C", "#87CEEB",
+        "#FF6B6B",
+        "#4ECDC4",
+        "#45B7D1",
+        "#96CEB4",
+        "#FFEAA7",
+        "#DDA0DD",
+        "#F0E68C",
+        "#87CEEB",
     ]
     fig = go.Figure(
         data=[go.Bar(x=names, y=vals, marker_color=colors[: len(names)])],

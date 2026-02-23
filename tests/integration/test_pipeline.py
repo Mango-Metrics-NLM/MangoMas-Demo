@@ -22,8 +22,14 @@ class TestFullPipeline:
         routing = route_task(sample_text, top_k=1)
         expert = routing["selected_experts"][0]["expert"]
         assert expert in [
-            "Code Expert", "Test Expert", "Design Expert", "Research Expert",
-            "Architecture Expert", "Security Expert", "Performance Expert", "Docs Expert",
+            "Code Expert",
+            "Test Expert",
+            "Design Expert",
+            "Research Expert",
+            "Architecture Expert",
+            "Security Expert",
+            "Performance Expert",
+            "Docs Expert",
         ]
 
         result = execute_cell("reasoning", sample_text)
@@ -70,7 +76,9 @@ class TestEndToEnd:
 
     def test_all_cells_in_pipeline(self) -> None:
         """Running all 10 cells in sequence should not crash."""
-        all_cells = "reasoning,memory,causal,ethics,empathy,curiosity,figliteral,r2p,telemetry,aggregator"
+        all_cells = (
+            "reasoning,memory,causal,ethics,empathy,curiosity,figliteral,r2p,telemetry,aggregator"
+        )
         result = compose_cells(all_cells, "Test all cells with this input text")
         assert result["total_cells"] == 10
         ok_count = sum(1 for a in result["activations"] if a["status"] == "ok")

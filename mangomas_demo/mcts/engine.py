@@ -86,8 +86,7 @@ class MCTSNode:
         }
         if self.children and max_depth > 0:
             d["children"] = [
-                c.to_dict(max_depth - 1)
-                for c in sorted(self.children, key=lambda n: -n.visits)[:5]
+                c.to_dict(max_depth - 1) for c in sorted(self.children, key=lambda n: -n.visits)[:5]
             ]
         return d
 
@@ -113,8 +112,12 @@ def run_mcts(
     start = time.monotonic()
     category = _detect_category(task)
     actions = TASK_CATEGORIES[category]
-    _log.info("MCTS starting: strategy=%s, simulations=%d, category=%s",
-              strategy, max_simulations, category)
+    _log.info(
+        "MCTS starting: strategy=%s, simulations=%d, category=%s",
+        strategy,
+        max_simulations,
+        category,
+    )
 
     # Build tree
     root = MCTSNode(id="root", action=task[:50], children=[])
@@ -180,8 +183,12 @@ def run_mcts(
         best_action = "none"
         best_value = 0.0
 
-    _log.info("MCTS completed in %.2f ms: best_action=%s, best_value=%.3f",
-              elapsed, best_action, best_value)
+    _log.info(
+        "MCTS completed in %.2f ms: best_action=%s, best_value=%.3f",
+        elapsed,
+        best_action,
+        best_value,
+    )
 
     return {
         "task": task,

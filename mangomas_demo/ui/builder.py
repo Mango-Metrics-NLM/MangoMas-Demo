@@ -48,19 +48,21 @@ def build_app() -> gr.Blocks:
             _build_routing_tab()
             _build_orchestration_tab()
 
-    return demo
+    return demo  # type: ignore[no-any-return]
 
 
 # ---------------------------------------------------------------------------
 # Tab builders (private)
 # ---------------------------------------------------------------------------
 
+
 def _build_features_tab() -> None:
     """Tab 1: Feature Extraction."""
     with gr.Tab("🔬 Features"):
         gr.Markdown("### Feature Extraction (64-D Vector)")
         text_in = gr.Textbox(
-            label="Input Text", value="Design a secure API gateway with rate limiting",
+            label="Input Text",
+            value="Design a secure API gateway with rate limiting",
             lines=2,
         )
         btn = gr.Button("Extract Features", variant="primary")
@@ -87,7 +89,8 @@ def _build_cells_tab() -> None:
             )
             config_box = gr.Textbox(label="Config JSON", value="{}", lines=1)
         text_in = gr.Textbox(
-            label="Input Text", value="Analyze the performance bottleneck in our API",
+            label="Input Text",
+            value="Analyze the performance bottleneck in our API",
             lines=2,
         )
         btn = gr.Button("Execute Cell", variant="primary")
@@ -104,11 +107,13 @@ def _build_composition_tab() -> None:
     with gr.Tab("🔗 Composition"):
         gr.Markdown("### Cell Composition Pipeline")
         pipe_in = gr.Textbox(
-            label="Pipeline (comma-separated)", value="reasoning, ethics, causal",
+            label="Pipeline (comma-separated)",
+            value="reasoning, ethics, causal",
             lines=1,
         )
         text_in = gr.Textbox(
-            label="Input Text", value="User john@example.com reported a security issue",
+            label="Input Text",
+            value="User john@example.com reported a security issue",
             lines=2,
         )
         btn = gr.Button("Run Pipeline", variant="primary")
@@ -123,14 +128,13 @@ def _build_mcts_tab() -> None:
         gr.Markdown("### Monte Carlo Tree Search — Task Decomposition")
         with gr.Row():
             task_in = gr.Textbox(
-                label="Task", value="Design a microservices architecture for e-commerce",
+                label="Task",
+                value="Design a microservices architecture for e-commerce",
                 lines=2,
             )
             with gr.Column():
                 sims_in = gr.Slider(10, 500, value=100, step=10, label="Simulations")
-                strategy_in = gr.Dropdown(
-                    choices=["ucb1", "puct"], value="ucb1", label="Strategy"
-                )
+                strategy_in = gr.Dropdown(choices=["ucb1", "puct"], value="ucb1", label="Strategy")
         btn = gr.Button("Run MCTS", variant="primary")
         with gr.Row():
             tree_out = gr.Plot(label="Search Tree")
@@ -156,7 +160,8 @@ def _build_routing_tab() -> None:
         gr.Markdown("### Neural Mixture-of-Experts Routing (~7M params)")
         with gr.Row():
             task_in = gr.Textbox(
-                label="Task", value="Implement authentication with JWT tokens",
+                label="Task",
+                value="Implement authentication with JWT tokens",
                 lines=2,
             )
             topk_in = gr.Slider(1, 8, value=3, step=1, label="Top-K Experts")
@@ -172,7 +177,9 @@ def _build_routing_tab() -> None:
             f_fig = plot_features(result["features"], title="Input Feature Vector")
             return w_fig, f_fig, result
 
-        btn.click(_run_route, inputs=[task_in, topk_in], outputs=[weights_out, feature_out, json_out])
+        btn.click(
+            _run_route, inputs=[task_in, topk_in], outputs=[weights_out, feature_out, json_out]
+        )
 
 
 def _build_orchestration_tab() -> None:
@@ -181,7 +188,8 @@ def _build_orchestration_tab() -> None:
         gr.Markdown("### Multi-Agent Task Orchestration")
         with gr.Row():
             task_in = gr.Textbox(
-                label="Task", value="Build a REST API with authentication and tests",
+                label="Task",
+                value="Build a REST API with authentication and tests",
                 lines=2,
             )
             with gr.Column():

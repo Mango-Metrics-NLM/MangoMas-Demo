@@ -48,9 +48,7 @@ class TestNotebookExists:
 
     def test_notebook_file_exists(self) -> None:
         """notebooks/demo.ipynb should exist."""
-        assert os.path.isfile(_NOTEBOOK_PATH), (
-            f"Missing notebook: {_NOTEBOOK_PATH}"
-        )
+        assert os.path.isfile(_NOTEBOOK_PATH), f"Missing notebook: {_NOTEBOOK_PATH}"
 
     def test_notebook_not_empty(self) -> None:
         """Notebook should have non-trivial size."""
@@ -117,15 +115,11 @@ class TestNotebookStructure:
         for i, cell in enumerate(code_cells):
             source = "".join(cell.get("source", []))
             # Match "from X import" and "import X"
-            imports = re.findall(
-                r"(?:from|import)\s+(mangomas_demo[\w.]*)", source
-            )
+            imports = re.findall(r"(?:from|import)\s+(mangomas_demo[\w.]*)", source)
             for imp in imports:
                 if imp not in _ALLOWED_IMPORT_SOURCES:
                     violations.append(f"Cell {i}: {imp}")
-        assert len(violations) == 0, (
-            f"Non-public API imports found: {violations}"
-        )
+        assert len(violations) == 0, f"Non-public API imports found: {violations}"
 
     def test_has_kernelspec(self, notebook: dict) -> None:
         """Notebook metadata should include a kernelspec."""

@@ -96,8 +96,6 @@ class TestNoHardcodedSecrets:
                     content = fh.read()
                     for pattern in secret_patterns:
                         matches = re.findall(pattern, content, re.IGNORECASE)
-                        violations.extend(
-                            f"{fpath}: {m}" for m in matches
-                        )
+                        violations.extend(f"{fpath}: {m}" for m in matches)
 
         assert len(violations) == 0, f"Hardcoded secrets found: {violations}"

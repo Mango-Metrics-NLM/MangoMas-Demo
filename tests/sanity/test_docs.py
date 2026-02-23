@@ -41,9 +41,7 @@ class TestArchitectureDocsExist:
 
     def test_docs_directory_exists(self) -> None:
         """docs/architecture/ directory should exist."""
-        assert os.path.isdir(_DOCS_ARCH_DIR), (
-            f"Missing directory: {_DOCS_ARCH_DIR}"
-        )
+        assert os.path.isdir(_DOCS_ARCH_DIR), f"Missing directory: {_DOCS_ARCH_DIR}"
 
     @pytest.mark.parametrize("filename", _EXPECTED_ARCH_DOCS)
     def test_arch_doc_exists(self, filename: str) -> None:
@@ -72,9 +70,7 @@ class TestArchitectureDocsMermaid:
         with open(path, encoding="utf-8") as f:
             content = f.read()
         mermaid_blocks = re.findall(r"```mermaid", content)
-        assert len(mermaid_blocks) >= 1, (
-            f"{filename} has no ```mermaid code blocks"
-        )
+        assert len(mermaid_blocks) >= 1, f"{filename} has no ```mermaid code blocks"
 
     @pytest.mark.parametrize("filename", _EXPECTED_ARCH_DOCS)
     def test_mermaid_blocks_are_closed(self, filename: str) -> None:

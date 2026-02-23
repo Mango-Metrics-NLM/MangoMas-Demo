@@ -45,11 +45,11 @@ class TestMCTSNode:
 
     def test_to_dict_depth_limit(self) -> None:
         """Should respect max_depth limit."""
-        deep = MCTSNode(id="deep", action="deep", children=[
-            MCTSNode(id="d1", action="d1", children=[
-                MCTSNode(id="d2", action="d2")
-            ])
-        ])
+        deep = MCTSNode(
+            id="deep",
+            action="deep",
+            children=[MCTSNode(id="d1", action="d1", children=[MCTSNode(id="d2", action="d2")])],
+        )
         d = deep.to_dict(max_depth=1)
         assert "children" in d
         # Depth 1 children should not have their own children serialized
