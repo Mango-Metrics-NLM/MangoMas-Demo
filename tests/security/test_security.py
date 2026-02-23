@@ -1,5 +1,5 @@
 """
-Security Tests — PII detection, input sanitization, secrets scan.
+Security Tests - PII detection, input sanitization, secrets scan.
 """
 
 from __future__ import annotations
@@ -56,7 +56,7 @@ class TestInputSanitization:
 
     def test_whitespace_only_rejected(self) -> None:
         """Whitespace-only input should be rejected."""
-        result = execute_cell("reasoning", "   \t\n  ")
+        result = execute_cell("reasoning", " \t\n  ")
         assert result["status"] == "error"
 
     def test_script_injection(self) -> None:

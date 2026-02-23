@@ -1,5 +1,5 @@
 """
-MCTS Visualization — Plotly sunburst chart of the MCTS search tree.
+MCTS Visualization - Plotly sunburst chart of the MCTS search tree.
 """
 
 from __future__ import annotations

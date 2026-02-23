@@ -1,5 +1,5 @@
 """
-MCTS Benchmark — compare MCTS vs Greedy vs Random strategies.
+MCTS Benchmark - compare MCTS vs Greedy vs Random strategies.
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ def benchmark_strategies(task: str) -> dict[str, Any]:
     category = _detect_category(task)
     actions = TASK_CATEGORIES[category]
 
-    # MCTS — full tree search
+    # MCTS - full tree search
     start = time.monotonic()
     r = run_mcts(task, max_simulations=100)
     elapsed_mcts = (time.monotonic() - start) * 1000
@@ -43,7 +43,7 @@ def benchmark_strategies(task: str) -> dict[str, Any]:
         "elapsed_ms": round(elapsed_mcts, 2),
     }
 
-    # Greedy — single-step: pick action with highest policy prior
+    # Greedy - single-step: pick action with highest policy prior
     start = time.monotonic()
     if TORCH_AVAILABLE:
         policy_net = PolicyNetwork(d_in=128, n_actions=len(actions))
@@ -65,7 +65,7 @@ def benchmark_strategies(task: str) -> dict[str, Any]:
         "elapsed_ms": round(elapsed_greedy, 2),
     }
 
-    # Random — pick random action with random value
+    # Random - pick random action with random value
     start = time.monotonic()
     random_action = random.choice(actions)
     if TORCH_AVAILABLE:

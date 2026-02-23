@@ -1,5 +1,5 @@
 """
-Sanity Tests — imports, config, parameter counts.
+Sanity Tests - imports, config, parameter counts.
 """
 
 from __future__ import annotations

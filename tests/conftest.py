@@ -22,7 +22,7 @@ def security_text() -> str:
 @pytest.fixture
 def empty_inputs() -> list[str]:
     """Various empty/whitespace inputs."""
-    return ["", "   ", "\t\n", "  \n  "]
+    return ["", " ", "\t\n", "\n  "]
 
 
 @pytest.fixture

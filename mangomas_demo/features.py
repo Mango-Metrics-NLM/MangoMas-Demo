@@ -1,5 +1,5 @@
 """
-Feature Engineering — 64-dimensional vector extraction.
+Feature Engineering - 64-dimensional vector extraction.
 
 Combines hash-based sinusoidal, domain-tag, structural, sentiment,
 and novelty/complexity signals into a unit-normalized feature vector.

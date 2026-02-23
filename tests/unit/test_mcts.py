@@ -1,5 +1,5 @@
 """
-Unit Tests — MCTS Planning Engine.
+Unit Tests - MCTS Planning Engine.
 """
 
 from __future__ import annotations

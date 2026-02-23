@@ -6,13 +6,15 @@ All notable changes to MangoMAS Demo will be documented in this file.
 
 ### Fixed
 
-- Fix incorrect GitHub URL in `notebooks/MangMas_demo.ipynb` summary cell (`mangomas/mangomas-demo` → `Mango-Metrics-NLM/MangoMas-Demo`)
+- Fix incorrect GitHub URL in `notebooks/MangMas_demo.ipynb` summary cell (`mangomas/mangomas-demo` -> `Mango-Metrics-NLM/MangoMas-Demo`)
 - Remove duplicate `notebooks/demo.ipynb` (canonical file is `MangMas_demo.ipynb`)
 - Update `test_notebook.py` to validate canonical notebook file and add link regression tests
+- Remove all non-mango emojis from Gradio tab labels and CHANGELOG
+- Replace all em dashes with standard hyphens across codebase (34 files)
 
-## [1.0.0] — 2026-02-22
+## [1.0.0] - 2026-02-22
 
-### 🎉 Initial Public Release
+### Initial Public Release
 
 **Features:**
 

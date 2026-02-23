@@ -1,13 +1,13 @@
 """
-Gradio UI Builder — assembles the 6-tab interactive demo.
+Gradio UI Builder - assembles the 6-tab interactive demo.
 
 Tabs:
-1. Feature Extraction — featurize64 + bar chart
-2. Cognitive Cells — execute any of 10 cells
-3. Cell Composition — multi-cell pipeline
-4. MCTS Planning — tree search with sunburst chart
-5. MoE Router — expert routing with visualization
-6. Agent Orchestration — multi-agent task execution
+1. Feature Extraction - featurize64 + bar chart
+2. Cognitive Cells - execute any of 10 cells
+3. Cell Composition - multi-cell pipeline
+4. MCTS Planning - tree search with sunburst chart
+5. MoE Router - expert routing with visualization
+6. Agent Orchestration - multi-agent task execution
 """
 
 from __future__ import annotations
@@ -36,7 +36,7 @@ def build_app() -> gr.Blocks:
     """
     with gr.Blocks(css=THEME_CSS, title="MangoMAS Demo") as demo:
         gr.Markdown(
-            "# 🥭 MangoMAS — Multi-Agent Cognitive Architecture\n"
+            "# 🥭 MangoMAS - Multi-Agent Cognitive Architecture\n"
             "**10 Cognitive Cells | MCTS Planning | 7M MoE Router | 8-Agent Orchestration**"
         )
 
@@ -58,7 +58,7 @@ def build_app() -> gr.Blocks:
 
 def _build_features_tab() -> None:
     """Tab 1: Feature Extraction."""
-    with gr.Tab("🔬 Features"):
+    with gr.Tab("Features"):
         gr.Markdown("### Feature Extraction (64-D Vector)")
         text_in = gr.Textbox(
             label="Input Text",
@@ -79,7 +79,7 @@ def _build_features_tab() -> None:
 
 def _build_cells_tab() -> None:
     """Tab 2: Individual Cell Execution."""
-    with gr.Tab("🧬 Cognitive Cells"):
+    with gr.Tab("Cognitive Cells"):
         gr.Markdown("### Execute Cognitive Cells")
         with gr.Row():
             cell_drop = gr.Dropdown(
@@ -104,7 +104,7 @@ def _build_cells_tab() -> None:
 
 def _build_composition_tab() -> None:
     """Tab 3: Multi-Cell Pipeline."""
-    with gr.Tab("🔗 Composition"):
+    with gr.Tab("Composition"):
         gr.Markdown("### Cell Composition Pipeline")
         pipe_in = gr.Textbox(
             label="Pipeline (comma-separated)",
@@ -124,8 +124,8 @@ def _build_composition_tab() -> None:
 
 def _build_mcts_tab() -> None:
     """Tab 4: MCTS Planning."""
-    with gr.Tab("🌲 MCTS Planning"):
-        gr.Markdown("### Monte Carlo Tree Search — Task Decomposition")
+    with gr.Tab("MCTS Planning"):
+        gr.Markdown("### Monte Carlo Tree Search - Task Decomposition")
         with gr.Row():
             task_in = gr.Textbox(
                 label="Task",
@@ -156,7 +156,7 @@ def _build_mcts_tab() -> None:
 
 def _build_routing_tab() -> None:
     """Tab 5: MoE Neural Router."""
-    with gr.Tab("🧠 MoE Router"):
+    with gr.Tab("MoE Router"):
         gr.Markdown("### Neural Mixture-of-Experts Routing (~7M params)")
         with gr.Row():
             task_in = gr.Textbox(
@@ -184,7 +184,7 @@ def _build_routing_tab() -> None:
 
 def _build_orchestration_tab() -> None:
     """Tab 6: Agent Orchestration."""
-    with gr.Tab("🤖 Orchestration"):
+    with gr.Tab("Orchestration"):
         gr.Markdown("### Multi-Agent Task Orchestration")
         with gr.Row():
             task_in = gr.Textbox(

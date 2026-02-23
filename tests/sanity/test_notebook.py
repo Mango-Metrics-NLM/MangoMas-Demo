@@ -1,5 +1,5 @@
 """
-Sanity Tests — Jupyter Notebook validation.
+Sanity Tests - Jupyter Notebook validation.
 
 Verifies that the demo notebook exists, is valid JSON,
 uses only public API imports, and contains correct links.

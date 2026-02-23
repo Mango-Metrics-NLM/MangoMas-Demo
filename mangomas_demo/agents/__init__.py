@@ -1,4 +1,4 @@
-"""Agent Orchestration — public API re-exports."""
+"""Agent Orchestration - public API re-exports."""
 
 from mangomas_demo.agents.orchestrator import AGENTS, orchestrate
 

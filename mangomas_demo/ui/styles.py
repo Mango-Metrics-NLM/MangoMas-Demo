@@ -1,5 +1,5 @@
 """
-UI Styles — theme CSS and colour tokens for the Gradio app.
+UI Styles - theme CSS and colour tokens for the Gradio app.
 """
 
 THEME_CSS: str = """
