@@ -1,5 +1,5 @@
 """
-MoE Neural Router — deterministic routing via singleton RouterNet.
+MoE Neural Router - deterministic routing via singleton RouterNet.
 
 Routes tasks to the top-K most relevant expert agents using a
 64-dim feature vector and keyword-based semantic boosting.

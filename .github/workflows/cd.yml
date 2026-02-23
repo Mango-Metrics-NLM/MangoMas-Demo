@@ -1,4 +1,4 @@
-name: CD — Deploy to HuggingFace
+name: CD - Deploy to HuggingFace
 
 on:
     push:
@@ -43,7 +43,7 @@ jobs:
                   print('Deployed to HuggingFace Space')
                   "
 
-            - name: Smoke test — verify space is live
+            - name: Smoke test - verify space is live
               run: |
                   sleep 30
                   python -c "
@@ -51,5 +51,5 @@ jobs:
                   url = 'https://huggingface.co/spaces/Mango-Metrics-NLM/MangoMAS'
                   response = urllib.request.urlopen(url)
                   assert response.status == 200, f'Space returned {response.status}'
-                  print('✅ HuggingFace Space is live')
+                  print(' HuggingFace Space is live')
                   "

@@ -1,5 +1,5 @@
 """
-Sanity Tests — Documentation validation.
+Sanity Tests - Documentation validation.
 
 Verifies that all architecture documents exist, contain valid Mermaid
 code blocks, and that the README contains no dead internal links.

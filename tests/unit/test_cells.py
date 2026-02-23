@@ -1,5 +1,5 @@
 """
-Unit Tests — Cognitive Cells (all 10 cell types).
+Unit Tests - Cognitive Cells (all 10 cell types).
 """
 
 from __future__ import annotations
@@ -40,7 +40,7 @@ class TestExecuteCell:
         assert "request_id" in result
         assert "elapsed_ms" in result
 
-    @pytest.mark.parametrize("empty", ["", "   ", "\t\n"])
+    @pytest.mark.parametrize("empty", ["", " ", "\t\n"])
     def test_empty_input_error(self, empty: str) -> None:
         """Empty/whitespace input should return error status."""
         result = execute_cell("reasoning", empty)

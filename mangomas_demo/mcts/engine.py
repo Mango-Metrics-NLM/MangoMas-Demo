@@ -1,5 +1,5 @@
 """
-MCTS Planning Engine — Monte Carlo Tree Search with NN priors.
+MCTS Planning Engine - Monte Carlo Tree Search with NN priors.
 
 Implements UCB1 and PUCT selection strategies with optional
 policy/value neural network integration.
@@ -103,7 +103,7 @@ def run_mcts(
         task: Task description string.
         max_simulations: Number of MCTS rollouts (10–500).
         exploration_constant: UCB1/PUCT exploration constant.
-        strategy: Selection strategy — 'ucb1' or 'puct'.
+        strategy: Selection strategy - 'ucb1' or 'puct'.
 
     Returns:
         Dict with task, category, best_action, best_value, tree, all_actions,

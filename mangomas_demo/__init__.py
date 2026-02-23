@@ -1,5 +1,5 @@
 """
-MangoMAS Demo — Multi-Agent Cognitive Architecture.
+MangoMAS Demo - Multi-Agent Cognitive Architecture.
 
 A production-grade interactive demo showcasing:
 - 10 Cognitive Cells with NN heads
@@ -16,7 +16,7 @@ __version__ = "1.0.0"
 __author__ = "Ian Cruickshank"
 
 # ---------------------------------------------------------------------------
-# Logging — auto-configure on import
+# Logging - auto-configure on import
 # ---------------------------------------------------------------------------
 from mangomas_demo.logging_config import configure_logging, get_logger
 

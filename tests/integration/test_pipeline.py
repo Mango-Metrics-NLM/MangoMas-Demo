@@ -1,5 +1,5 @@
 """
-Integration Tests — full pipeline and end-to-end flows.
+Integration Tests - full pipeline and end-to-end flows.
 """
 
 from __future__ import annotations

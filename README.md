@@ -34,7 +34,7 @@
 
 MangoMAS Demo is an interactive, production-grade demonstration of a **Multi-Agent Cognitive Architecture** built on composable neural components. It combines 10 biologically-inspired Cognitive Cells, a Monte Carlo Tree Search (MCTS) planning engine with neural network priors, and a ~7M parameter Mixture-of-Experts (MoE) router to orchestrate 8 specialized agents across complex task decomposition workflows.
 
-The system is designed for researchers, AI engineers, and architects exploring multi-agent coordination, neural routing, and cognitive cell composition. The 6-tab Gradio interface provides hands-on access to every subsystem — from 64-dimensional feature extraction through cell execution pipelines to full agent orchestration — with real-time visualizations powered by Plotly.
+The system is designed for researchers, AI engineers, and architects exploring multi-agent coordination, neural routing, and cognitive cell composition. The 6-tab Gradio interface provides hands-on access to every subsystem - from 64-dimensional feature extraction through cell execution pipelines to full agent orchestration - with real-time visualizations powered by Plotly.
 
 Key differentiators include deterministic reproducibility via fixed-seed singleton routing, graceful CPU fallback when PyTorch GPU is unavailable, privacy-preserving PII detection in the Ethics cell, and a modular architecture where every component can be used independently via a clean Python API or composed into arbitrary pipelines.
 
@@ -78,7 +78,7 @@ graph TB
 | **Agent Orchestration** | 8 specialized agents with learned routing | SWE, Architect, QA, Security, DevOps, Research, Performance, Docs agents; 3 strategies (moe_routing, round_robin, random); agent-to-cell mapping |
 | **Feature Extraction** | 64-dimensional vector encoding | 32 hash sinusoidal + 16 domain tags + 8 structural + 4 sentiment + 4 novelty dimensions, L2-normalized to unit length |
 | **Neural Networks** | 5 PyTorch models with CPU fallback | ExpertTower (64-512-512-256), MixtureOfExperts7M (~7M params, 16 experts), RouterNet (64-128-64-N), PolicyNetwork (128-256-128-N), ValueNetwork (192-256-64-1) |
-| **Interactive Demo** | 6-tab Gradio interface | Feature Extraction, Cognitive Cells, Cell Composition, MCTS Planning, MoE Router, Agent Orchestration — all with real-time Plotly visualizations |
+| **Interactive Demo** | 6-tab Gradio interface | Feature Extraction, Cognitive Cells, Cell Composition, MCTS Planning, MoE Router, Agent Orchestration - all with real-time Plotly visualizations |
 
 ---
 
@@ -86,7 +86,7 @@ graph TB
 
 ### Live Demo
 
-Try MangoMAS instantly on HuggingFace Spaces — no installation required:
+Try MangoMAS instantly on HuggingFace Spaces - no installation required:
 
 > **[https://huggingface.co/spaces/Mango-Metrics-NLM/MangoMAS](https://huggingface.co/spaces/Mango-Metrics-NLM/MangoMAS)**
 
@@ -116,7 +116,7 @@ The container includes a health check that validates the package imports correct
 
 All public functions are re-exported from the top-level `mangomas_demo` package for convenient access.
 
-### featurize64 — Feature Extraction
+### featurize64 - Feature Extraction
 
 Extract a deterministic 64-dimensional feature vector from text input.
 
@@ -128,7 +128,7 @@ print(len(vector))   # 64
 print(type(vector))  # <class 'list'>
 ```
 
-### execute_cell — Cognitive Cell Execution
+### execute_cell - Cognitive Cell Execution
 
 Execute any of the 10 cognitive cell types with optional JSON configuration.
 
@@ -144,7 +144,7 @@ print(result["head_type"])      # nn
 print(result["section_count"])  # number of reasoning sections
 ```
 
-### run_mcts — MCTS Planning
+### run_mcts - MCTS Planning
 
 Run Monte Carlo Tree Search on a task with configurable strategy and simulation count.
 
@@ -163,7 +163,7 @@ print(result["nn_enabled"])        # True if PyTorch available
 print(result["total_simulations"]) # 200
 ```
 
-### route_task — MoE Neural Routing
+### route_task - MoE Neural Routing
 
 Route a task to the top-K most relevant experts via the neural MoE gate.
 
@@ -178,7 +178,7 @@ for expert in result["selected_experts"]:
 # 3. Architecture Expert (weight=0.1456)
 ```
 
-### orchestrate — Agent Orchestration
+### orchestrate - Agent Orchestration
 
 Orchestrate multiple agents for a task using one of three routing strategies.
 
@@ -196,7 +196,7 @@ for agent_result in result["results"]:
     print(f"{agent_result['agent']}: cell={agent_result['cell_used']}")
 ```
 
-### compose_cells — Cell Pipeline Composition
+### compose_cells - Cell Pipeline Composition
 
 Execute a sequential pipeline of cognitive cells on the same input.
 
@@ -329,10 +329,10 @@ MangoMas-Demo/
 │       └── cd.yml                     # Continuous deployment
 ├── docs/
 │   └── architecture/
-│       ├── c4-context.md              # C4 Level 1 — System Context
-│       ├── c4-container.md            # C4 Level 2 — Container diagram
-│       ├── c4-component.md            # C4 Level 3 — Component diagram
-│       ├── c4-code.md                 # C4 Level 4 — Code-level class diagrams
+│       ├── c4-context.md              # C4 Level 1 - System Context
+│       ├── c4-container.md            # C4 Level 2 - Container diagram
+│       ├── c4-component.md            # C4 Level 3 - Component diagram
+│       ├── c4-code.md                 # C4 Level 4 - Code-level class diagrams
 │       ├── data-flow.md               # Data flow sequence diagrams
 │       └── deployment.md              # Deployment architecture
 ├── notebooks/
@@ -354,12 +354,12 @@ Detailed C4 model architecture documentation is available in [docs/architecture/
 
 | Level | Document | Description |
 |---|---|---|
-| **L1 — Context** | [c4-context.md](docs/architecture/c4-context.md) | System context — MangoMAS and its external actors |
-| **L2 — Container** | [c4-container.md](docs/architecture/c4-container.md) | Major containers and their interactions |
-| **L3 — Component** | [c4-component.md](docs/architecture/c4-component.md) | Detailed component breakdown within each container |
-| **L4 — Code** | [c4-code.md](docs/architecture/c4-code.md) | Class diagrams for neural networks, MCTSNode, cell registry |
+| **L1 - Context** | [c4-context.md](docs/architecture/c4-context.md) | System context - MangoMAS and its external actors |
+| **L2 - Container** | [c4-container.md](docs/architecture/c4-container.md) | Major containers and their interactions |
+| **L3 - Component** | [c4-component.md](docs/architecture/c4-component.md) | Detailed component breakdown within each container |
+| **L4 - Code** | [c4-code.md](docs/architecture/c4-code.md) | Class diagrams for neural networks, MCTSNode, cell registry |
 | **Data Flow** | [data-flow.md](docs/architecture/data-flow.md) | Sequence diagrams for pipeline, MCTS, and orchestration flows |
-| **Deployment** | [deployment.md](docs/architecture/deployment.md) | Deployment topology — local, Docker, HuggingFace, CI/CD |
+| **Deployment** | [deployment.md](docs/architecture/deployment.md) | Deployment topology - local, Docker, HuggingFace, CI/CD |
 
 ---
 

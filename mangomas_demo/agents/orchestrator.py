@@ -1,5 +1,5 @@
 """
-Agent Orchestration — Multi-agent task execution with learned routing.
+Agent Orchestration - Multi-agent task execution with learned routing.
 
 Supports three routing strategies:
 - moe_routing: Neural MoE gate selects top-K agents
@@ -49,7 +49,7 @@ def orchestrate(task: str, max_agents: int = 3, strategy: str = "moe_routing") -
     Args:
         task: Task description string.
         max_agents: Maximum number of agents to select (1–8).
-        strategy: Routing strategy — 'moe_routing', 'round_robin', or 'random'.
+        strategy: Routing strategy - 'moe_routing', 'round_robin', or 'random'.
 
     Returns:
         Dict with task, strategy, agents_selected, max_agents, results,

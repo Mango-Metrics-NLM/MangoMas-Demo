@@ -1,5 +1,5 @@
 """
-Unit Tests — Neural Network Models.
+Unit Tests - Neural Network Models.
 """
 
 from __future__ import annotations

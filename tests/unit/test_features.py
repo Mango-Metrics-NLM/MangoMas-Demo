@@ -1,5 +1,5 @@
 """
-Unit Tests — Feature Extraction (featurize64).
+Unit Tests - Feature Extraction (featurize64).
 """
 
 from __future__ import annotations
@@ -38,7 +38,7 @@ class TestFeaturize64:
     def test_domain_tags_detected(self) -> None:
         """Domain keywords should set tag features to non-zero."""
         features = featurize64("code security architecture test")
-        # Tags are at indices 32-47 — code, security, architecture, test should activate
+        # Tags are at indices 32-47 - code, security, architecture, test should activate
         assert features[32] > 0  # "code" tag
         assert features[36] > 0  # "security" tag
 

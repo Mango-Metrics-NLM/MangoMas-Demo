@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MangoMAS Demo — Gradio app entrypoint.
+MangoMAS Demo - Gradio app entrypoint.
 
 Usage:
     python app.py                          # default port 7860

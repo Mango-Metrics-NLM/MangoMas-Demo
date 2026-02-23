@@ -1,5 +1,5 @@
 """
-Unit Tests — Structured Logging Infrastructure.
+Unit Tests - Structured Logging Infrastructure.
 """
 
 from __future__ import annotations
@@ -167,7 +167,7 @@ class TestJSONFormatter:
             args=(),
             exc_info=None,
         )
-        record.component = "cells"  # type: ignore[attr-defined]
+        record.component = "cells"# type: ignore[attr-defined]
         record.elapsed_ms = 12.5  # type: ignore[attr-defined]
         parsed = json.loads(formatter.format(record))
         assert parsed["component"] == "cells"

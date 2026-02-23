@@ -1,13 +1,13 @@
 """
-Logging Configuration — structured logging for MangoMAS Demo.
+Logging Configuration - structured logging for MangoMAS Demo.
 
 Provides a centralized, configurable logging setup using Python's standard
 ``logging`` module. All configuration is driven by environment variables
-with sensible defaults — no hard-coded values.
+with sensible defaults - no hard-coded values.
 
 Environment Variables:
     MANGOMAS_LOG_LEVEL: Root log level (default: ``INFO``).
-    MANGOMAS_LOG_FORMAT: Output format — ``text`` (default) or ``json``.
+    MANGOMAS_LOG_FORMAT: Output format - ``text`` (default) or ``json``.
 """
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ _ENV_LOG_FORMAT = "MANGOMAS_LOG_FORMAT"
 
 _LOGGER_NAME = "mangomas_demo"
 
-_TEXT_FORMAT = "%(asctime)s [%(levelname)s] %(name)s — %(message)s"
+_TEXT_FORMAT = "%(asctime)s [%(levelname)s] %(name)s - %(message)s"
 _TEXT_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 
@@ -70,7 +70,7 @@ def get_logger(name: str | None = None) -> logging.Logger:
 def configure_logging() -> logging.Logger:
     """Configure the root ``mangomas_demo`` logger from environment variables.
 
-    Safe to call multiple times — will not duplicate handlers.
+    Safe to call multiple times - will not duplicate handlers.
 
     Returns:
         The configured root :class:`logging.Logger` for the package.

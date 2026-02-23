@@ -1,5 +1,5 @@
 """
-Unit Tests — MoE Neural Router.
+Unit Tests - MoE Neural Router.
 """
 
 from __future__ import annotations

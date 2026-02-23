@@ -1,5 +1,5 @@
 """
-Cognitive Cell Executor — dispatch and execution logic for all 10 cell types.
+Cognitive Cell Executor - dispatch and execution logic for all 10 cell types.
 
 Each cell follows the lifecycle: validate → infer → structure → return.
 """
@@ -325,7 +325,7 @@ def _execute_figliteral(result: dict[str, Any], text: str) -> None:
                 literal_parts.append(f"'{idiom}' = {meaning}")
         if not literal_parts and ("like a" in text.lower() or "as if" in text.lower()):
             literal_parts.append(
-                "Contains simile/metaphor — direct comparison without figurative intent"
+                "Contains simile/metaphor - direct comparison without figurative intent"
             )
         result["literal_interpretation"] = (
             "; ".join(literal_parts)
@@ -354,7 +354,7 @@ def _execute_r2p(result: dict[str, Any]) -> None:
 
 
 def _execute_telemetry(result: dict[str, Any], text: str) -> None:
-    """Telemetry event parsing — extract action, duration, page, element."""
+    """Telemetry event parsing - extract action, duration, page, element."""
     result["event_recorded"] = True
     result["trace_id"] = f"trace-{uuid.uuid4().hex[:8]}"
     result["timestamp"] = time.time()
