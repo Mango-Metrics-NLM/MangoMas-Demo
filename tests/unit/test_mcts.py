@@ -4,10 +4,8 @@ Unit Tests — MCTS Planning Engine.
 
 from __future__ import annotations
 
-import pytest
-
-from mangomas_demo.mcts.engine import MCTSNode, run_mcts, TASK_CATEGORIES, _detect_category
 from mangomas_demo.mcts.benchmark import benchmark_strategies
+from mangomas_demo.mcts.engine import TASK_CATEGORIES, MCTSNode, _detect_category, run_mcts
 
 
 class TestMCTSNode:
@@ -47,11 +45,11 @@ class TestMCTSNode:
 
     def test_to_dict_depth_limit(self) -> None:
         """Should respect max_depth limit."""
-        deep = MCTSNode(id="deep", action="deep", children=[
-            MCTSNode(id="d1", action="d1", children=[
-                MCTSNode(id="d2", action="d2")
-            ])
-        ])
+        deep = MCTSNode(
+            id="deep",
+            action="deep",
+            children=[MCTSNode(id="d1", action="d1", children=[MCTSNode(id="d2", action="d2")])],
+        )
         d = deep.to_dict(max_depth=1)
         assert "children" in d
         # Depth 1 children should not have their own children serialized

@@ -4,9 +4,7 @@ Unit Tests — MoE Neural Router.
 
 from __future__ import annotations
 
-import pytest
-
-from mangomas_demo.routing.router import route_task, EXPERT_NAMES
+from mangomas_demo.routing.router import EXPERT_NAMES, route_task
 
 
 class TestRouteTask:

@@ -12,6 +12,10 @@ import math
 
 import plotly.graph_objects as go
 
+from mangomas_demo.logging_config import get_logger
+
+_log = get_logger("features")
+
 
 def featurize64(text: str) -> list[float]:
     """
@@ -41,9 +45,22 @@ def featurize64(text: str) -> list[float]:
     # 2. Domain tag signals (16 dims)
     lower = text.lower()
     domain_tags = [
-        "code", "function", "class", "api", "security", "threat",
-        "architecture", "design", "data", "database", "test", "deploy",
-        "optimize", "performance", "research", "analyze",
+        "code",
+        "function",
+        "class",
+        "api",
+        "security",
+        "threat",
+        "architecture",
+        "design",
+        "data",
+        "database",
+        "test",
+        "deploy",
+        "optimize",
+        "performance",
+        "research",
+        "analyze",
     ]
     for tag in domain_tags:
         features.append(1.0 if tag in lower else 0.0)
@@ -72,13 +89,18 @@ def featurize64(text: str) -> list[float]:
     features.append(unique_words / total_words)  # lexical diversity
     features.append(min(len(text.split("\n")) / 10.0, 1.0))  # line count
     features.append(text.count("(") / max(len(text), 1) * 20)  # nesting
-    features.append(
-        min(max(len(w) for w in text.split()) / 20.0, 1.0) if text.strip() else 0.0
-    )
+    features.append(min(max(len(w) for w in text.split()) / 20.0, 1.0) if text.strip() else 0.0)
 
     # Normalize to unit vector
     norm = math.sqrt(sum(f * f for f in features)) + 1e-8
-    return [f / norm for f in features[:64]]
+    normalized = [f / norm for f in features]
+    _log.debug(
+        "featurize64 produced %d-dim vector (norm=%.4f) for input length %d",
+        len(normalized),
+        norm,
+        len(text),
+    )
+    return normalized
 
 
 def plot_features(features: list[float], title: str = "64-D Feature Vector") -> go.Figure:
@@ -93,21 +115,33 @@ def plot_features(features: list[float], title: str = "64-D Feature Vector") -> 
     """
     labels = (
         [f"hash_{i}" for i in range(32)]
-        + [f"tag_{t}" for t in [
-            "code", "func", "class", "api", "sec", "threat",
-            "arch", "design", "data", "db", "test", "deploy",
-            "opt", "perf", "research", "analyze",
-        ]]
+        + [
+            f"tag_{t}"
+            for t in [
+                "code",
+                "func",
+                "class",
+                "api",
+                "sec",
+                "threat",
+                "arch",
+                "design",
+                "data",
+                "db",
+                "test",
+                "deploy",
+                "opt",
+                "perf",
+                "research",
+                "analyze",
+            ]
+        ]
         + [f"struct_{i}" for i in range(8)]
         + [f"sent_{i}" for i in range(4)]
         + [f"novel_{i}" for i in range(4)]
     )
     colors = (
-        ["#FF6B6B"] * 32
-        + ["#4ECDC4"] * 16
-        + ["#45B7D1"] * 8
-        + ["#96CEB4"] * 4
-        + ["#FFEAA7"] * 4
+        ["#FF6B6B"] * 32 + ["#4ECDC4"] * 16 + ["#45B7D1"] * 8 + ["#96CEB4"] * 4 + ["#FFEAA7"] * 4
     )
     fig = go.Figure(
         data=[go.Bar(x=labels, y=features, marker_color=colors)],

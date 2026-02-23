@@ -4,11 +4,14 @@ MangoMAS Demo — Gradio app entrypoint.
 
 Usage:
     python app.py                          # default port 7860
-    python app.py --server-port 8080       # custom port
+    GRADIO_PORT=8080 python app.py         # custom port via env
 """
+
+import os
 
 from mangomas_demo.ui.builder import build_app
 
 if __name__ == "__main__":
     app = build_app()
-    app.launch(server_name="0.0.0.0", server_port=7860, share=False)
+    port = int(os.environ.get("GRADIO_PORT", "7860"))
+    app.launch(server_name="0.0.0.0", server_port=port, share=False)

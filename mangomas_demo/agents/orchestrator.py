@@ -14,7 +14,10 @@ import time
 from typing import Any
 
 from mangomas_demo.cells.executor import execute_cell
+from mangomas_demo.logging_config import get_logger
 from mangomas_demo.routing.router import route_task
+
+_log = get_logger("agents.orchestrator")
 
 AGENTS: list[dict[str, str]] = [
     {"name": "SWE Agent", "specialization": "Code scaffold generation", "icon": "[SWE]"},
@@ -40,9 +43,7 @@ _AGENT_CELL_MAP: dict[str, str] = {
 }
 
 
-def orchestrate(
-    task: str, max_agents: int = 3, strategy: str = "moe_routing"
-) -> dict[str, Any]:
+def orchestrate(task: str, max_agents: int = 3, strategy: str = "moe_routing") -> dict[str, Any]:
     """Orchestrate multiple agents for a task using specified routing strategy.
 
     Args:
@@ -55,6 +56,7 @@ def orchestrate(
         and total_elapsed_ms.
     """
     start = time.monotonic()
+    _log.info("Orchestrating task with strategy=%s, max_agents=%d", strategy, max_agents)
 
     if strategy == "round_robin":
         agent_results = _orchestrate_round_robin(task, max_agents)
@@ -64,6 +66,7 @@ def orchestrate(
         agent_results = _orchestrate_moe(task, max_agents)
 
     elapsed = (time.monotonic() - start) * 1000
+    _log.info("Orchestration completed in %.2f ms: %d agents selected", elapsed, len(agent_results))
 
     return {
         "task": task,
@@ -75,51 +78,49 @@ def orchestrate(
     }
 
 
-def _orchestrate_round_robin(
-    task: str, max_agents: int
-) -> list[dict[str, Any]]:
+def _orchestrate_round_robin(task: str, max_agents: int) -> list[dict[str, Any]]:
     """Select agents in round-robin order."""
     selected_agents = AGENTS[:max_agents]
     results: list[dict[str, Any]] = []
     for agent in selected_agents:
         cell_type = _AGENT_CELL_MAP.get(agent["name"], "reasoning")
         cell_result = execute_cell(cell_type, task)
-        results.append({
-            "agent": agent["name"],
-            "icon": agent["icon"],
-            "specialization": agent["specialization"],
-            "weight": round(1.0 / max_agents, 4),
-            "cell_used": cell_type,
-            "output": cell_result,
-            "confidence": cell_result.get("confidence", round(0.8, 3)),
-        })
+        results.append(
+            {
+                "agent": agent["name"],
+                "icon": agent["icon"],
+                "specialization": agent["specialization"],
+                "weight": round(1.0 / max_agents, 4),
+                "cell_used": cell_type,
+                "output": cell_result,
+                "confidence": cell_result.get("confidence", round(0.8, 3)),
+            }
+        )
     return results
 
 
-def _orchestrate_random(
-    task: str, max_agents: int
-) -> list[dict[str, Any]]:
+def _orchestrate_random(task: str, max_agents: int) -> list[dict[str, Any]]:
     """Randomly select agents."""
     shuffled = _rnd.sample(AGENTS, min(max_agents, len(AGENTS)))
     results: list[dict[str, Any]] = []
     for agent in shuffled:
         cell_type = _AGENT_CELL_MAP.get(agent["name"], "reasoning")
         cell_result = execute_cell(cell_type, task)
-        results.append({
-            "agent": agent["name"],
-            "icon": agent["icon"],
-            "specialization": agent["specialization"],
-            "weight": round(1.0 / max_agents, 4),
-            "cell_used": cell_type,
-            "output": cell_result,
-            "confidence": cell_result.get("confidence", round(0.8, 3)),
-        })
+        results.append(
+            {
+                "agent": agent["name"],
+                "icon": agent["icon"],
+                "specialization": agent["specialization"],
+                "weight": round(1.0 / max_agents, 4),
+                "cell_used": cell_type,
+                "output": cell_result,
+                "confidence": cell_result.get("confidence", round(0.8, 3)),
+            }
+        )
     return results
 
 
-def _orchestrate_moe(
-    task: str, max_agents: int
-) -> list[dict[str, Any]]:
+def _orchestrate_moe(task: str, max_agents: int) -> list[dict[str, Any]]:
     """Use MoE neural routing to select agents."""
     routing = route_task(task, top_k=max_agents)
     results: list[dict[str, Any]] = []
@@ -128,13 +129,15 @@ def _orchestrate_moe(
         agent = next((a for a in AGENTS if agent_name in a["name"]), AGENTS[0])
         cell_type = _AGENT_CELL_MAP.get(agent["name"], "reasoning")
         cell_result = execute_cell(cell_type, task)
-        results.append({
-            "agent": agent["name"],
-            "icon": agent["icon"],
-            "specialization": agent["specialization"],
-            "weight": expert["weight"],
-            "cell_used": cell_type,
-            "output": cell_result,
-            "confidence": cell_result.get("confidence", round(0.8, 3)),
-        })
+        results.append(
+            {
+                "agent": agent["name"],
+                "icon": agent["icon"],
+                "specialization": agent["specialization"],
+                "weight": expert["weight"],
+                "cell_used": cell_type,
+                "output": cell_result,
+                "confidence": cell_result.get("confidence", round(0.8, 3)),
+            }
+        )
     return results

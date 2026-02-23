@@ -10,11 +10,12 @@ from typing import Any
 
 import numpy as np
 
+from mangomas_demo.mcts.engine import TASK_CATEGORIES, _detect_category, run_mcts
 from mangomas_demo.models import TORCH_AVAILABLE
-from mangomas_demo.mcts.engine import run_mcts, TASK_CATEGORIES, _detect_category
 
 if TORCH_AVAILABLE:
     import torch
+
     from mangomas_demo.models import PolicyNetwork, ValueNetwork
 
 

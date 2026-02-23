@@ -31,15 +31,16 @@ jobs:
                   HF_TOKEN: ${{ secrets.HF_TOKEN }}
               run: |
                   python -c "
+                  import os
                   from huggingface_hub import HfApi
-                  api = HfApi(token='$HF_TOKEN')
+                  api = HfApi(token=os.environ['HF_TOKEN'])
                   api.upload_folder(
                       folder_path='.',
                       repo_id='Mango-Metrics-NLM/MangoMAS',
                       repo_type='space',
                       ignore_patterns=['.git*', 'tests/*', 'docs/*', '.github/*', '__pycache__/*'],
                   )
-                  print('✅ Deployed to HuggingFace Space')
+                  print('Deployed to HuggingFace Space')
                   "
 
             - name: Smoke test — verify space is live
