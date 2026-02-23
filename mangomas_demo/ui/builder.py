@@ -48,7 +48,7 @@ def build_app() -> gr.Blocks:
             _build_routing_tab()
             _build_orchestration_tab()
 
-    return demo  # type: ignore[no-any-return]
+    return demo
 
 
 # ---------------------------------------------------------------------------
